@@ -213,3 +213,34 @@ ggsave("Figures/Diversity_panel.TIFF",
        units = "in")
        
 
+
+# Water Level Attempts ----------------------------------------------------
+
+# max growing season lake levels normalized to the long term NOAA avg for Erie
+# y = (x - min) / (max - min)
+
+# All of this only months April - September
+# Lake Erie min = 173.38 (Sept 1934)
+# Lake Erie max = 175.14 (May 2019)
+#175.14 - 173.38
+
+growing <- read.csv("Data/erie_growing_season_mean.csv") # April - Sept 2016 to 2019
+growing$Max
+
+(174.65 - 173.38)/(1.76) #2016 = 0.7215909
+(174.83 - 173.38)/(1.76) #2017 = 0.8238636
+(174.89 - 173.38)/(1.76) #2018 = 0.8579545
+(175.14 - 173.38)/(1.76) #2019 = 1.00
+
+Year <- as.factor(c("2016","2017","2018","2019", "2020"))
+Depth <- as.numeric(c("0.7215909","0.8238636","0.8579545","1.00", "1.00"))
+depth.norm <- data.frame(Year, Depth)
+
+ggplot(depth.norm, aes(x = Year, y = Depth, group = 1)) +
+  geom_line(size = 1) +
+  ylim(0, 1)
+
+
+live.stems +
+    scale_y_continuous(name = "Live Stem Density per m^-2",
+    sec.axis = sec_axis( trans=~./100, name="Lake Erie water depth")) 
